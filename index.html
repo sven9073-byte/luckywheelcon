@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel of Fortune - Full Customization</title>
+    <style>
+	    /* РАБОЧИЕ анимации для декораций */
+		@keyframes discoFlashWorking {
+		  0%, 100% { 
+			opacity: 1; 
+			transform: scale(1);
+		  }
+		  50% { 
+			opacity: 0.5; 
+			transform: scale(1.1);
+		  }
+		}
+
+		@keyframes carnivalBlinkWorking {
+		  0%, 100% { 
+			opacity: 1; 
+			box-shadow: 0 0 8px currentColor;
+		  }
+		  50% { 
+			opacity: 0.6; 
+			box-shadow: 0 0 4px currentColor;
+		  }
+		}
+
+		@keyframes lightningFlashWorking {
+		  0%, 80% { 
+			opacity: 0.3; 
+		  }
+		  90%, 100% { 
+			opacity: 1; 
+			text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+		  }
+		}
+        /* Анимации для декораций */
+		@keyframes discoFlash {
+		  0%, 50% { 
+			opacity: 1; 
+			transform: scale(1);
+		  }
+		  25%, 75% { 
+			opacity: 0.3; 
+			transform: scale(1.2);
+		  }
+		}
+
+		@keyframes carnivalBlink {
+		  0%, 70% { 
+			opacity: 1; 
+			transform: scale(1);
+			box-shadow: 0 0 8px currentColor;
+		  }
+		  85% { 
+			opacity: 0.3; 
+			transform: scale(0.8);
+			box-shadow: 0 0 4px currentColor;
+		  }
+		  100% { 
+			opacity: 1; 
+			transform: scale(1);
+			box-shadow: 0 0 8px currentColor;
+		  }
+		}
+
+		@keyframes lightningFlash {
+		  0%, 90% { 
+			opacity: 0; 
+			transform: scale(1);
+		  }
+		  95% { 
+			opacity: 1; 
+			transform: scale(1.5);
+			text-shadow: 0 0 20px #00ffff;
+		  }
+		  100% { 
+			opacity: 0; 
+			transform: scale(1);
+		  }
+		}	
+	    /* Новые анимации */
+		@keyframes galaxySpin {
+		  from { transform: translate(-50%, -50%) rotate(0deg); }
+		  to { transform: translate(-50%, -50%) rotate(360deg); }
+		}
+
+		@keyframes sunRays {
+		  from { transform: translate(-50%, -50%) rotate(0deg); }
+		  to { transform: translate(-50%, -50%) rotate(360deg); }
+		}
+
+		@keyframes fireFlicker {
+		  0%, 100% { 
+			filter: brightness(1) saturate(1);
+			box-shadow: 0 0 40px rgba(255, 69, 0, 0.8), inset 0 0 30px rgba(255, 0, 0, 0.6);
+		  }
+		  50% { 
+			filter: brightness(1.3) saturate(1.2);
+			box-shadow: 0 0 60px rgba(255, 69, 0, 1), inset 0 0 40px rgba(255, 0, 0, 0.8);
+		  }
+		}
+
+		@keyframes emeraldBlink {
+		  0%, 70% { opacity: 1; transform: scale(1); }
+		  85% { opacity: 0.3; transform: scale(0.7); }
+		  100% { opacity: 1; transform: scale(1); }
+		}
+
+		@keyframes royalSparkle {
+		  0%, 80% { opacity: 1; transform: scale(1); }
+		  90% { opacity: 0.5; transform: scale(1.3); }
+		  100% { opacity: 1; transform: scale(1); }
+		}
+
+		@keyframes luxuryShine {
+		  0%, 100% { 
+			filter: brightness(1);
+			box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), inset 0 0 30px rgba(218, 165, 32, 0.8);
+		  }
+		  50% { 
+			filter: brightness(1.4);
+			box-shadow: 0 0 80px rgba(255, 215, 0, 1), inset 0 0 50px rgba(218, 165, 32, 1);
+		  }
+		}
+	    /* Новые анимации для ободков */
+		@keyframes goldPulse {
+		  0%, 100% { 
+			box-shadow: 
+			  inset 0 0 30px rgba(255, 215, 0, 0.9),
+			  0 0 40px rgba(255, 215, 0, 0.6),
+			  0 0 60px rgba(255, 215, 0, 0.4);
+		  }
+		  50% { 
+			box-shadow: 
+			  inset 0 0 50px rgba(255, 215, 0, 1),
+			  0 0 60px rgba(255, 215, 0, 0.8),
+			  0 0 80px rgba(255, 215, 0, 0.6);
+		  }
+		}
+
+		@keyframes blinkingLights {
+		  0%, 100% { 
+			opacity: 1; 
+			box-shadow: 0 0 10px currentColor;
+		  }
+		  50% { 
+			opacity: 0.3; 
+			box-shadow: 0 0 5px currentColor;
+		  }
+		}
+
+		@keyframes carnivalBlink {
+		  0%, 70% { 
+			opacity: 1; 
+			transform: scale(1);
+			box-shadow: 0 0 15px currentColor;
+		  }
+		  85% { 
+			opacity: 0.3; 
+			transform: scale(0.8);
+			box-shadow: 0 0 5px currentColor;
+		  }
+		  100% { 
+			opacity: 1; 
+			transform: scale(1);
+			box-shadow: 0 0 15px currentColor;
+		  }
+		}
+
+		@keyframes discoSpin {
+		  from { 
+			transform: translate(-50%, -50%) rotate(0deg); 
+		  }
+		  to { 
+			transform: translate(-50%, -50%) rotate(360deg); 
+		  }
+		}
+
+		@keyframes discoFlash {
+		  0%, 50% { 
+			opacity: 1; 
+			transform: scale(1);
+		  }
+		  25%, 75% { 
+			opacity: 0.3; 
+			transform: scale(1.2);
+		  }
+		}
+
+		@keyframes electricPulse {
+		  0% { 
+			box-shadow: 
+			  0 0 30px #00bfff,
+			  0 0 60px #1e90ff,
+			  inset 0 0 30px #0000ff;
+		  }
+		  100% { 
+			box-shadow: 
+			  0 0 50px #00bfff,
+			  0 0 100px #1e90ff,
+			  inset 0 0 50px #0000ff;
+		  }
+		}
+
+		@keyframes lightningFlash {
+		  0%, 90% { 
+			opacity: 0; 
+			transform: scale(1);
+		  }
+		  95% { 
+			opacity: 1; 
+			transform: scale(1.5);
+			text-shadow: 0 0 20px #00ffff;
+		  }
+		  100% { 
+			opacity: 0; 
+			transform: scale(1);
+		  }
+		}
+
+		@keyframes rainbowPulse {
+		  0%, 100% { 
+			filter: brightness(1) saturate(1);
+			transform: translate(-50%, -50%) scale(1);
+		  }
+		  50% { 
+			filter: brightness(1.3) saturate(1.5);
+			transform: translate(-50%, -50%) scale(1.05);
+		  }
+		}
+	    /* Анимации для кастомных ободков */
+		@keyframes neonRotate {
+		  from { 
+			transform: translate(-50%, -50%) rotate(0deg); 
+		  }
+		  to { 
+			transform: translate(-50%, -50%) rotate(360deg); 
+		  }
+		}
+
+		@keyframes rainbowSpin {
+		  from { 
+			transform: translate(-50%, -50%) rotate(0deg); 
+		  }
+		  to { 
+			transform: translate(-50%, -50%) rotate(360deg); 
+		  }
+		}
+
+		/* Убеждаемся что кастомные ободки находятся под колесом но над фоном */
+		.custom-wheel-border {
+		  pointer-events: none;
+		}
+
+		.wheel-canvas {
+		  position: relative;
+		  z-index: 2;
+		}
+		[dir="rtl"] {
+		  direction: rtl;
+		}
+
+		[dir="rtl"] .sidebar {
+		  border-right: none;
+		  border-left: 1px solid rgba(255, 255, 255, 0.2);
+		}
+
+		[dir="rtl"] .item-controls-row {
+		  flex-direction: row-reverse;
+		}
+
+		[dir="rtl"] .wheel-settings {
+		  direction: rtl;
+		}
+
+		[dir="rtl"] .status-bar {
+		  flex-direction: row-reverse;
+		}
+
+		[dir="rtl"] .tabs {
+		  flex-direction: row-reverse;
+		}
+
+		[dir="rtl"] .controls {
+		  flex-direction: row-reverse;
+		}
+
+		[dir="rtl"] .file-input-wrapper {
+		  direction: ltr;
+		}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            transition: all 0.5s ease;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 380px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .wheel-container {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: white;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .wheel-canvas {
+            border-radius: 50%;
+            display: block !important;
+            width: 500px !important;
+            height: 500px !important;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #ff4757;
+            z-index: 100;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.4);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(116, 185, 255, 0.6);
+        }
+
+        .btn-small.btn-secondary {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            border: none;
+        }
+
+        .btn-small.btn-secondary:hover {
+            background: linear-gradient(45deg, #0984e3, #74b9ff);
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+            color: #2d3436;
+            font-size: 18px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #74b9ff;
+        }
+
+        .items-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .item-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .item-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .item-card.selected {
+            border-color: #74b9ff;
+            box-shadow: 0 0 0 2px rgba(116, 185, 255, 0.2);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .item-label {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .item-weight {
+            background: #74b9ff;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .item-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .item-controls-row {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .color-input {
+            width: 40px;
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-danger {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff3742;
+        }
+
+        .btn-success {
+            background: #2ed573;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #1dd1a1;
+        }
+
+        .wheel-settings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .range-input {
+            width: 100%;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            background: #f1f2f6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 12px;
+        }
+
+        .tab.active {
+            background: #74b9ff;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .result-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-align: center;
+            transition: all 0.3s ease;
+            max-width: 400px;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .result-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .result-popup h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .result-popup .winner {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .prize-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 15px auto;
+            border: 3px solid white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .status-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            background: #74b9ff;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .file-input-wrapper:hover {
+            background: #0984e3;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .preset-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .preset-btn {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .preset-btn.active {
+            border-color: #74b9ff;
+            background: #74b9ff;
+            color: white;
+        }
+
+        .preset-btn:hover {
+            border-color: #74b9ff;
+        }
+
+        .image-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+            margin-left: 5px;
+        }
+
+        .customization-section {
+            border: 2px dashed #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .customization-section.has-content {
+            border-color: #74b9ff;
+            background: rgba(116, 185, 255, 0.1);
+        }
+
+        .theme-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .theme-preview.active {
+            border-color: #74b9ff;
+            transform: scale(1.1);
+        }
+
+        /* Notification styles */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .notification {
+            background: #74b9ff;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #00b894;
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        .notification.warning {
+            background: #f39c12;
+        }
+
+        /* Additional styles for new features */
+        .image-preview-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 16px;
+            margin: 0 5px;
+        }
+
+        .help-text {
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+            line-height: 1.3;
+        }
+		.theme-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+		}
+
+		.theme-btn {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 10px;
+			border: 2px solid #ddd;
+			border-radius: 8px;
+			background: white;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			font-size: 11px;
+			font-weight: 600;
+		}
+
+		.theme-btn:hover {
+			border-color: #74b9ff;
+			transform: translateY(-2px);
+		}
+
+		.theme-btn.active {
+			border-color: #74b9ff;
+			background: #f0f8ff;
+		}
+
+		.theme-preview {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			margin-bottom: 5px;
+			border: 2px solid #ddd;
+		}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Settings sidebar -->
+        <div class="sidebar">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" data-tab="presets">Presets</button>
+                <button class="tab" data-tab="items">Items</button>
+                <button class="tab" data-tab="design">Design</button>
+                <button class="tab" data-tab="custom">Custom</button>
+                <button class="tab" data-tab="settings">Settings</button>
+            </div>
+
+            <!-- Tab: Wheel Presets -->
+            <div class="tab-content active" id="presets-tab">
+                <h2>Wheel Presets</h2>
+                
+                <div class="section">
+                    <h3>Select number of sectors:</h3>
+                    <div class="preset-selector">
+                        <div class="preset-btn active" data-preset="sectors4">
+                            4 sectors
+                        </div>
+                        <div class="preset-btn" data-preset="sectors8">
+                            8 sectors
+                        </div>
+                        <div class="preset-btn" data-preset="sectors16">
+                            16 sectors
+                        </div>
+                        <div class="preset-btn" data-preset="sectors32">
+                            32 sectors
+                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: #666;">
+                        Each preset automatically configures correct angles for precise winner determination.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h3>Quick Setup</h3>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="randomizeColors()">Random Colors</button>
+                        <button class="btn btn-secondary" onclick="setEqualWeights()">Equal Chances</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Wheel Items -->
+            <div class="tab-content" id="items-tab">
+                <h2>Wheel Items</h2>
+                
+                <div class="section">
+                    <h3>Items List:</h3>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+                        Use presets to change the number of sectors. Here you can configure names, weights and images.
+                    </p>
+                    <div class="items-list" id="items-list"></div>
+                </div>
+            </div>
+
+            <!-- Tab: Design -->
+            <div class="tab-content" id="design-tab">
+                <h2>Wheel Design</h2>
+                <div class="section">
+					<h3>🎨 Design Themes</h3>
+					<p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+						Choose from professionally designed wheel themes
+					</p>
+					
+					<div class="theme-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; max-height: 300px; overflow-y: auto;">
+						<!-- Первый ряд -->
+						<button class="theme-btn" data-theme="classic_red_gold">
+							<div class="theme-preview" style="background: conic-gradient(#ff0000 0deg 45deg, #ffffff 45deg 90deg, #ff0000 90deg 135deg, #ffffff 135deg 180deg, #ff0000 180deg 225deg, #ffffff 225deg 270deg, #ff0000 270deg 315deg, #ffffff 315deg 360deg); border: 3px solid #ffd700;"></div>
+							Classic Red Gold
+						</button>
+						
+						<button class="theme-btn" data-theme="casino_multicolor">
+							<div class="theme-preview" style="background: conic-gradient(#8B0000 0deg 60deg, #006400 60deg 120deg, #000080 120deg 180deg, #FF6347 180deg 240deg, #4B0082 240deg 300deg, #2F4F4F 300deg 360deg);"></div>
+							Casino Multi
+						</button>
+						
+						<button class="theme-btn" data-theme="casino_dots_red">
+							<div class="theme-preview" style="background: conic-gradient(#8B0000 0deg 60deg, #CD5C5C 60deg 120deg, #8B0000 120deg 180deg, #CD5C5C 180deg 240deg, #8B0000 240deg 300deg, #CD5C5C 300deg 360deg); border: 2px dashed #fff;"></div>
+							Casino Dots
+						</button>
+						
+						<button class="theme-btn" data-theme="modern_blue_gradient">
+							<div class="theme-preview" style="background: linear-gradient(45deg, #1e3c72, #2a5298, #87CEEB);"></div>
+							Modern Blue
+						</button>
+						
+						<!-- Второй ряд -->
+						<button class="theme-btn" data-theme="sunshine_segments">
+							<div class="theme-preview" style="background: conic-gradient(#FFD700 0deg 60deg, #FF6347 60deg 120deg, #FFD700 120deg 180deg, #FF6347 180deg 240deg, #FFD700 240deg 300deg, #FF6347 300deg 360deg);"></div>
+							Sunshine
+						</button>
+						
+						<button class="theme-btn" data-theme="purple_galaxy">
+							<div class="theme-preview" style="background: radial-gradient(circle, #4B0082, #8A2BE2, #9932CC);"></div>
+							Purple Galaxy
+						</button>
+						
+						<button class="theme-btn" data-theme="emerald_casino">
+							<div class="theme-preview" style="background: linear-gradient(45deg, #006400, #32CD32, #00FF00); border: 2px solid #013220;"></div>
+							Emerald Casino
+						</button>
+						
+						<button class="theme-btn" data-theme="fire_wheel">
+							<div class="theme-preview" style="background: linear-gradient(45deg, #FF0000, #FF4500, #FFA500);"></div>
+							Fire Wheel
+						</button>
+						
+						<!-- Третий ряд -->
+						<button class="theme-btn" data-theme="rainbow_neon">
+							<div class="theme-preview" style="background: conic-gradient(#FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #9400D3, #FF0000);"></div>
+							Rainbow Neon
+						</button>
+						
+						<button class="theme-btn" data-theme="royal_segments">
+							<div class="theme-preview" style="background: conic-gradient(#4B0082 0deg 45deg, #FFD700 45deg 90deg, #8B0000 90deg 135deg, #FFD700 135deg 180deg, #4B0082 180deg 225deg, #FFD700 225deg 270deg, #8B0000 270deg 315deg, #FFD700 315deg 360deg);"></div>
+							Royal
+						</button>
+						
+						<button class="theme-btn" data-theme="vintage_carnival">
+							<div class="theme-preview" style="background: conic-gradient(#8B0000, #FFD700, #000080, #FF6347, #4B0082, #32CD32); border: 3px solid #8B4513;"></div>
+							Carnival
+						</button>
+						
+						<button class="theme-btn" data-theme="disco_fever">
+							<div class="theme-preview" style="background: conic-gradient(#FF1493, #00FFFF, #FFFF00, #FF4500, #8A2BE2, #00FF00); border: 3px solid #8B4513;"></div>
+							Disco Fever
+						</button>
+						
+						<button class="theme-btn" data-theme="electric_storm">
+							<div class="theme-preview" style="background: radial-gradient(circle, #00BFFF, #1E90FF, #0000FF); box-shadow: 0 0 10px #00BFFF;"></div>
+							Electric Storm
+						</button>
+						
+						<button class="theme-btn" data-theme="golden_luxury">
+							<div class="theme-preview" style="background: linear-gradient(45deg, #FFD700, #FFA500, #B8860B);"></div>
+							Golden Luxury
+						</button>
+					</div>
+					
+					<button class="btn btn-primary" onclick="applySelectedTheme()">Apply Theme</button>
+				</div>
+                <div class="section">
+                    <h3>Item Colors</h3>
+                    <div class="form-group">
+                        <label>Color Scheme:</label>
+                        <select class="form-control" id="color-scheme">
+                            <option value="rainbow">Rainbow</option>
+                            <option value="pastel">Pastel</option>
+                            <option value="bright">Bright</option>
+                            <option value="dark">Dark</option>
+                            <option value="neon">Neon</option>
+                            <option value="ocean">Ocean</option>
+                            <option value="sunset">Sunset</option>
+                            <option value="forest">Forest</option>
+                            <option value="custom">Create New...</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="applyColorScheme()">Apply Scheme</button>
+                        <button class="btn btn-secondary" onclick="randomizeColors()">Random Colors</button>
+                    </div>
+                    <p class="help-text">
+                        💡 Color schemes replace individual sector colors. 
+                        Use the "Items" tab to configure individual colors.
+                    </p>
+                </div>
+
+                <div class="section">
+                    <h3>Font and Text</h3>
+                    <div class="form-group">
+                        <label>Font Size:</label>
+                        <input type="range" class="range-input" id="font-size" min="10" max="50" value="20">
+                        <span id="font-size-value">20</span>px
+                    </div>
+                    <div class="form-group">
+                        <label>Text Color:</label>
+                        <input type="color" class="form-control color-input" id="text-color" value="#ffffff">
+                    </div>
+                </div>
+
+                <div class="section">
+					<h3>Borders and Lines</h3>
+					<div class="wheel-settings">
+						<div class="form-group">
+							<label>Border Width:</label>
+							<input type="range" class="range-input" id="border-width" min="0" max="10" value="3">
+							<span id="border-width-value">3</span>px
+						</div>
+						<div class="form-group">
+							<label>Border Color:</label>
+							<input type="color" class="color-input" id="border-color" value="#000000">
+						</div>
+					</div>
+				</div>
+                
+                <!-- Quick actions section -->
+                <div class="section">
+                    <h3>Quick Actions</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <button class="btn-small btn-secondary" onclick="clearAllItemColors()">Clear All Colors</button>
+                        <button class="btn-small btn-secondary" onclick="copyColorsFromScheme()">Copy from Scheme</button>
+                    </div>
+                    <p class="help-text">
+                        "Clear All Colors" - removes individual sector colors<br>
+                        "Copy from Scheme" - applies current scheme as individual colors
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tab: Customization -->
+            <div class="tab-content" id="custom-tab">
+                <h2>Full Customization</h2>
+                
+                <div class="section">
+                    <h3>App Background</h3>
+                    <div class="customization-section" id="background-section">
+                        <p>Upload background image</p>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="background-image" accept="image/*">
+                            Select Background
+                        </div>
+                        <button class="btn-small btn-danger" onclick="removeBackgroundImage()">Remove Background</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Wheel Border</h3>
+                    <div class="customization-section" id="border-section">
+                        <p>Upload PNG/GIF for custom border (GIFs will be animated)</p>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="wheel-border-image" accept="image/*">
+                            Select Border
+                        </div>
+                        <button class="btn-small btn-danger" onclick="removeWheelBorderImage()">Remove Border</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Winner Window Style</h3>
+                    <div class="form-group">
+                        <label>Winner Window Background:</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="popup-background" accept="image/*">
+                            Select Background
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Window Text Color:</label>
+                        <input type="color" class="color-input" id="popup-text-color" value="#ffffff">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Settings -->
+            <div class="tab-content" id="settings-tab">
+                <h2>Wheel Settings</h2>
+                
+                <div class="section">
+                    <h3>Rotation</h3>
+                    <div class="form-group">
+                        <label>Spin Speed:</label>
+                        <input type="range" class="range-input" id="spin-speed" min="100" max="500" value="250">
+                        <span id="spin-speed-value">250</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Spin Duration (sec):</label>
+                        <input type="range" class="range-input" id="spin-duration" min="2" max="10" value="4">
+                        <span id="spin-duration-value">4</span>
+                    </div>
+                </div>
+
+                <div class="section">
+				<h3>Sound</h3>
+				<div class="form-group">
+					<label>
+						<input type="checkbox" id="enable-sound" checked> Enable Sounds
+					</label>
+				</div>
+				
+				<div class="form-group">
+					<label>Volume:</label>
+					<input type="range" class="range-input" id="sound-volume" min="0" max="100" value="50">
+					<span id="sound-volume-value">50</span>%
+				</div>
+				
+				<h4>Custom Sounds</h4>
+				
+				<!-- Spin Sound -->
+				<div class="form-group">
+					<label>Spin Sound:</label>
+					<div class="customization-section" id="spin-sound-section">
+						<div class="file-input-wrapper">
+							<input type="file" id="spin-sound-input" accept="audio/*">
+							Upload Spin Sound
+						</div>
+						<button class="btn-small btn-danger" onclick="removeCustomSound('spin')" style="margin-left: 10px;">Remove</button>
+					</div>
+				</div>
+				
+				<!-- Win Sound -->
+				<div class="form-group">
+					<label>Win Sound:</label>
+					<div class="customization-section" id="win-sound-section">
+						<div class="file-input-wrapper">
+							<input type="file" id="win-sound-input" accept="audio/*">
+							Upload Win Sound
+						</div>
+						<button class="btn-small btn-danger" onclick="removeCustomSound('win')" style="margin-left: 10px;">Remove</button>
+					</div>
+				</div>
+				
+				<!-- Lose Sound -->
+				<div class="form-group">
+					<label>Lose Sound:</label>
+					<div class="customization-section" id="lose-sound-section">
+						<div class="file-input-wrapper">
+							<input type="file" id="lose-sound-input" accept="audio/*">
+							Upload Lose Sound
+						</div>
+						<button class="btn-small btn-danger" onclick="removeCustomSound('lose')" style="margin-left: 10px;">Remove</button>
+					</div>
+				</div>
+				
+				<div style="margin-top: 15px;">
+					<button class="btn-small btn-secondary" onclick="testSound('spin')">Test Spin</button>
+					<button class="btn-small btn-secondary" onclick="testSound('win')">Test Win</button>
+					<button class="btn-small btn-secondary" onclick="testSound('lose')">Test Lose</button>
+				</div>
+			</div>
+
+                <div class="section">
+                    <h3>Statistics</h3>
+                    <button class="btn btn-secondary" onclick="showStatistics()">Show Statistics</button>
+                    <button class="btn btn-secondary" onclick="resetStatistics()">Reset Statistics</button>
+                </div>
+
+                <div class="section">
+                    <h3>Project</h3>
+                    <button class="btn btn-secondary" onclick="saveProject()">Save Project</button>
+                    <button class="btn btn-secondary" onclick="loadProjectFile()">Load Project</button>
+                    <input type="file" id="project-file" accept=".json" style="display: none;" onchange="handleProjectFile(this)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Main area with wheel -->
+        <div class="main-content">
+            <div class="wheel-container" id="wheel-container">
+                <div class="pointer"></div>
+                <canvas class="wheel-canvas" id="wheel-canvas" width="500" height="500"></canvas>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-primary" id="spin-btn" onclick="spinWheel()">SPIN WHEEL</button>
+                <button class="btn btn-secondary" onclick="stopWheel()">STOP</button>
+                <button class="btn btn-secondary" onclick="resetWheel()">RESET</button>
+                <button class="btn btn-secondary" onclick="exportImage()">EXPORT</button>
+				<button class="btn btn-secondary" onclick="toggleExhibitionMode()">EXHIBITION MODE</button>
+            </div>
+
+            <div class="status-bar">
+				<div>
+					<button onclick="switchLanguage('en')" style="margin-right: 5px; padding: 2px 6px;">EN</button>
+					<button onclick="switchLanguage('he')" style="padding: 2px 6px;">HE</button>
+				</div>			
+                <span>Items: <span id="items-count">0</span></span>
+                <span>Preset: <span id="current-preset">4 sectors</span></span>
+                <span>Last Result: <span id="last-result">-</span></span>
+                <span>Total Spins: <span id="total-spins">0</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="result-popup" id="result-popup">
+        <h3>🎉 Congratulations! 🎉</h3>
+        <img id="prize-image" class="prize-image" style="display: none;">
+        <div class="winner" id="winner-text"></div>
+        <button class="btn btn-primary" onclick="closeResultPopup()">Close</button>
+        <button class="btn btn-secondary" onclick="spinAgain()">Spin Again</button>
+    </div>
+
+    <!-- Connect scripts in correct order -->
+    <script src="utils.js"></script>
+	<script src="gif_handler.js"></script>
+    <script src="wheel-lib.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

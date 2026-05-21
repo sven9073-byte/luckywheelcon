@@ -1,0 +1,141 @@
+{
+  "name": "wheel-of-fortune-app",
+  "version": "2.1.0",
+  "description": "Настраиваемое колесо удачи с поддержкой GIF анимаций",
+  "main": "main.js",
+  "homepage": "./",
+  "author": "Wheel Fortune Developer",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "build-mac": "electron-builder --mac", 
+    "build-linux": "electron-builder --linux",
+    "build-all": "electron-builder --win --mac --linux",
+    "dist": "npm run build",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [
+    "wheel",
+    "fortune",
+    "game",
+    "random",
+    "electron",
+    "gif",
+    "customizable"
+  ],
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.6.4"
+  },
+  "build": {
+    "appId": "com.wheelfortune.app",
+    "productName": "Wheel of Fortune",
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "copyright": "Copyright © 2024",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "**/*",
+      "!**/*.ts",
+      "!*.code-workspace", 
+      "!LICENSE.md",
+      "!package-lock.json",
+      "!.gitignore",
+      "!README.md",
+      "!yarn.lock",
+      "!.github",
+      "!dist",
+      "!.nyc_output",
+      "!coverage",
+      "!.yarn",
+      "!node_modules/@types"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable", 
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.ico",
+      "publisherName": "Wheel Fortune Inc.",
+      "verifyUpdateCodeSignature": false,
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Wheel of Fortune",
+      "runAfterFinish": true,
+      "menuCategory": "Games"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.games"
+    },
+    "dmg": {
+      "title": "${productName} ${version}",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 380,
+          "y": 280,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 110,
+          "y": 280,
+          "type": "file"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        },
+        {
+          "target": "rpm",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icon.png",
+      "category": "Game"
+    },
+    "compression": "maximum",
+    "removePackageScripts": true
+  }
+}

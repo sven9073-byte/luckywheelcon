@@ -1,0 +1,705 @@
+/* Расширенные стили для колеса удачи с полной кастомизацией */
+
+/* Анимации */
+@keyframes wheelSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3) translate(-50%, -50%);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05) translate(-50%, -50%);
+  }
+  70% {
+    transform: scale(0.9) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(116, 185, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(116, 185, 255, 0.8), 0 0 30px rgba(116, 185, 255, 0.6);
+  }
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Улучшенные компоненты */
+.wheel-container {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.wheel-container:hover {
+  transform: scale(1.02);
+}
+
+.wheel-container.spinning {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.pointer {
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.pointer.highlight {
+  animation: glow 1s infinite ease-in-out;
+}
+
+/* Эффекты для результата */
+.result-popup {
+  animation: bounceIn 0.5s ease-out;
+}
+
+.result-popup.show {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Конфетти эффект */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #ff6b6b;
+  animation: confetti 3s linear infinite;
+}
+
+.confetti:nth-child(2n) {
+  background: #74b9ff;
+  animation-delay: 0.3s;
+}
+
+.confetti:nth-child(3n) {
+  background: #00b894;
+  animation-delay: 0.6s;
+}
+
+.confetti:nth-child(4n) {
+  background: #fdcb6e;
+  animation-delay: 0.9s;
+}
+
+/* Искры вокруг колеса */
+.sparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: sparkle 2s infinite ease-in-out;
+}
+
+/* Улучшенные кнопки */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Улучшенная боковая панель */
+.sidebar {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.section {
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.section:nth-child(1) { animation-delay: 0.1s; }
+.section:nth-child(2) { animation-delay: 0.2s; }
+.section:nth-child(3) { animation-delay: 0.3s; }
+.section:nth-child(4) { animation-delay: 0.4s; }
+
+/* Улучшенные карточки элементов */
+.item-card {
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.item-card.selected {
+  animation: glow 2s infinite ease-in-out;
+}
+
+/* Улучшенные вкладки */
+.tab {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #74b9ff;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.tab.active::after {
+  width: 100%;
+}
+
+.tab:hover:not(.active) {
+  background: rgba(116, 185, 255, 0.1);
+}
+
+/* Прогресс индикатор для загрузки */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.loading-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Уведомления */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #74b9ff;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 10000;
+  max-width: 300px;
+}
+
+.notification.show {
+  transform: translateX(0);
+}
+
+.notification.success {
+  background: #00b894;
+}
+
+.notification.error {
+  background: #e74c3c;
+}
+
+.notification.warning {
+  background: #f39c12;
+}
+
+/* Кастомный скроллбар */
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #74b9ff, #0984e3);
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #0984e3, #74b9ff);
+}
+
+/* Эффекты для пресетов */
+.preset-btn {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.preset-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(116, 185, 255, 0.2);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.preset-btn:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+.preset-btn.active {
+  transform: scale(1.05);
+}
+
+/* Тематические превью */
+.theme-preview {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.theme-preview:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.theme-preview.active {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Эффекты для загрузки файлов */
+.file-input-wrapper {
+  transition: all 0.3s ease;
+}
+
+.file-input-wrapper:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(116, 185, 255, 0.4);
+}
+
+.customization-section {
+  transition: all 0.3s ease;
+}
+
+.customization-section.dragover {
+  border-color: #74b9ff;
+  background: rgba(116, 185, 255, 0.1);
+  transform: scale(1.02);
+}
+
+/* Анимация статус бара */
+.status-bar {
+  animation: slideInLeft 0.5s ease-out 0.5s both;
+}
+
+/* Эффекты наведения для колеса */
+.wheel-canvas {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.wheel-canvas:hover {
+  filter: brightness(1.1);
+}
+
+/* Responsive анимации */
+@media (max-width: 768px) {
+  .wheel-container {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .sidebar {
+    animation: slideInLeft 0.3s ease-out;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Дополнительные эффекты для элементов */
+.item-label {
+  transition: all 0.3s ease;
+}
+
+.item-card:hover .item-label {
+  color: #74b9ff;
+  transform: translateX(5px);
+}
+
+.item-weight {
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Эффекты для цветовых элементов */
+.color-input {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.color-input:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Эффекты для range inputs */
+.range-input {
+  transition: all 0.3s ease;
+}
+
+.range-input:hover {
+  transform: scale(1.02);
+}
+
+/* Улучшенные тени */
+.enhanced-shadow {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Эффект стеклянной поверхности */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Дополнительные утилиты */
+.fade-in {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.slide-in {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.bounce-in {
+  animation: bounceIn 0.5s ease-out;
+}
+
+.glow-effect {
+  animation: glow 2s infinite ease-in-out;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .sidebar {
+    background: rgba(45, 52, 54, 0.95);
+    color: white;
+  }
+  
+  .section {
+    background: rgba(99, 110, 114, 0.7);
+  }
+  
+  .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  
+  .item-card {
+    background: rgba(99, 110, 114, 0.8);
+    color: white;
+  }
+}
+/* CSS стили для анимированных GIF элементов */
+/* Добавьте в ваш CSS файл (например, в enhanced_styles.css) */
+
+/* Анимированный фон GIF */
+.animated-background-gif {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  image-rendering: auto !important;
+}
+
+/* Контейнер для анимированного ободка колеса */
+.animated-wheel-border-container {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Анимированный ободок колеса */
+.animated-wheel-border-gif {
+  display: block !important;
+  object-fit: contain !important;
+  image-rendering: auto !important;
+  animation: borderPulse 3s ease-in-out infinite !important;
+}
+
+/* Анимация пульсации для ободка */
+@keyframes borderPulse {
+  0%, 100% {
+    filter: brightness(1) saturate(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.1) saturate(1.2);
+    transform: scale(1.02);
+  }
+}
+
+/* Контейнер для анимированных GIF элементов колеса */
+.animated-item-gif-container {
+  position: absolute !important;
+  pointer-events: none !important;
+  z-index: 5 !important;
+  transition: transform 1s ease-out !important;
+}
+
+/* Анимированные GIF элементы колеса */
+.animated-item-gif {
+  display: block !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  border: 2px solid white !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+  image-rendering: auto !important;
+  animation: itemGlow 2s ease-in-out infinite alternate !important;
+}
+
+/* Анимация свечения для элементов */
+@keyframes itemGlow {
+  0% {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    border-color: white;
+  }
+  100% {
+    box-shadow: 0 4px 16px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+    border-color: rgba(255,255,255,0.9);
+  }
+}
+
+/* Анимированный фон popup */
+.animated-popup-background-gif {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  z-index: -1 !important;
+  border-radius: inherit !important;
+  image-rendering: auto !important;
+}
+
+/* Улучшения для контейнера колеса при использовании GIF */
+.wheel-container {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* Специальные стили для различных размеров экрана */
+@media (max-width: 768px) {
+  .animated-wheel-border-gif {
+    max-width: 90vw;
+    max-height: 90vw;
+  }
+  
+  .animated-item-gif {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .animated-item-gif {
+    width: 30px !important;
+    height: 30px !important;
+  }
+}
+
+/* Оптимизация производительности для GIF */
+.animated-background-gif,
+.animated-wheel-border-gif,
+.animated-item-gif,
+.animated-popup-background-gif {
+  will-change: auto !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  transform-style: preserve-3d !important;
+  -webkit-transform-style: preserve-3d !important;
+}
+
+/* Стили для отладки (можно удалить в продакшене) */
+.debug-gif-overlay {
+  border: 2px dashed red !important;
+  background: rgba(255, 0, 0, 0.1) !important;
+}
+
+/* Стили для плавного появления GIF элементов */
+.animated-item-gif-container.fade-in {
+  animation: fadeInScale 0.5s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Стили для паузы анимации (для оптимизации) */
+.animation-paused .animated-background-gif,
+.animation-paused .animated-wheel-border-gif,
+.animation-paused .animated-item-gif,
+.animation-paused .animated-popup-background-gif {
+  animation-play-state: paused !important;
+}
+
+/* Особые стили для высокого DPI */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .animated-background-gif,
+  .animated-wheel-border-gif,
+  .animated-item-gif,
+  .animated-popup-background-gif {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}

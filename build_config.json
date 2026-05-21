@@ -1,0 +1,175 @@
+{
+  "appId": "com.wheelfortune.app",
+  "productName": "Колесо Удачи",
+  "artifactName": "${productName}-${version}-${arch}.${ext}",
+  "copyright": "Copyright © 2024 ${author}",
+  "asar": true,
+  "directories": {
+    "output": "dist",
+    "buildResources": "build"
+  },
+  "files": [
+    "**/*",
+    "!**/*.ts",
+    "!*.code-workspace",
+    "!LICENSE.md",
+    "!package.json",
+    "!.gitignore",
+    "!README.md",
+    "!yarn.lock",
+    "!.github",
+    "!dist",
+    "!.nyc_output",
+    "!coverage",
+    "!.yarn",
+    "!node_modules/@types",
+    "!node_modules/electron",
+    "!node_modules/electron-builder"
+  ],
+  "extraFiles": [
+    {
+      "from": "assets",
+      "to": "assets",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "assets/icon.ico",
+    "publisherName": "Wheel Fortune Inc.",
+    "verifyUpdateCodeSignature": false,
+    "requestedExecutionLevel": "asInvoker",
+    "artifactName": "${productName}-${version}-${arch}-setup.${ext}",
+    "fileAssociations": [
+      {
+        "ext": "whl",
+        "name": "Wheel Project",
+        "description": "Файл проекта Колесо Удачи",
+        "mimeType": "application/wheel-project",
+        "icon": "assets/file-icon.ico"
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "assets/installer-icon.ico",
+    "uninstallerIcon": "assets/uninstaller-icon.ico",
+    "installerHeaderIcon": "assets/header-icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Колесо Удачи",
+    "runAfterFinish": true,
+    "menuCategory": "Games",
+    "include": "build/installer.nsh",
+    "artifactName": "${productName}-${version}-setup.${ext}",
+    "deleteAppDataOnUninstall": false,
+    "installerLanguages": ["ru", "en"],
+    "language": "2049"
+  },
+  "portable": {
+    "artifactName": "${productName}-${version}-portable.${ext}",
+    "requestExecutionLevel": "user"
+  },
+  "mac": {
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "icon": "assets/icon.icns",
+    "category": "public.app-category.games",
+    "artifactName": "${productName}-${version}-mac.${ext}"
+  },
+  "dmg": {
+    "title": "${productName} ${version}",
+    "artifactName": "${productName}-${version}-mac.${ext}",
+    "background": "assets/dmg-background.png",
+    "iconSize": 100,
+    "contents": [
+      {
+        "x": 380,
+        "y": 280,
+        "type": "link",
+        "path": "/Applications"
+      },
+      {
+        "x": 110,
+        "y": 280,
+        "type": "file"
+      }
+    ],
+    "window": {
+      "width": 540,
+      "height": 380
+    }
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      },
+      {
+        "target": "deb",
+        "arch": ["x64"]
+      },
+      {
+        "target": "rpm",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "assets/icon.png",
+    "category": "Game",
+    "artifactName": "${productName}-${version}-linux.${ext}",
+    "desktop": {
+      "Name": "Колесо Удачи",
+      "Comment": "Настраиваемое колесо удачи",
+      "Keywords": "wheel;fortune;game;random;spinner;",
+      "StartupWMClass": "wheel-of-fortune-app"
+    }
+  },
+  "appImage": {
+    "artifactName": "${productName}-${version}-linux.${ext}"
+  },
+  "deb": {
+    "artifactName": "${productName}-${version}-linux.${ext}",
+    "synopsis": "Настраиваемое приложение колесо удачи",
+    "description": "Полнофункциональное приложение для создания и настройки колес удачи с расширенными возможностями кастомизации.",
+    "priority": "optional",
+    "depends": ["gconf2", "gconf-service", "libnotify4", "libappindicator1", "libxtst6", "libnss3"]
+  },
+  "rpm": {
+    "artifactName": "${productName}-${version}-linux.${ext}",
+    "summary": "Настраиваемое приложение колесо удачи",
+    "description": "Полнофункциональное приложение для создания и настройки колес удачи с расширенными возможностями кастомизации."
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "your-username",
+      "repo": "wheel-of-fortune-app",
+      "private": true
+    }
+  ],
+  "buildDependenciesFromSource": false,
+  "npmRebuild": false,
+  "nodeGypRebuild": false,
+  "buildVersion": "1.0.0",
+  "compression": "maximum",
+  "removePackageScripts": true,
+  "afterSign": "build/notarize.js",
+  "afterAllArtifactBuild": "build/afterBuild.js"
+}
