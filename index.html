@@ -4,7 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wheel of Fortune - Full Customization</title>
-    <style>
+    <style> 
+	    input[type="checkbox"]:disabled + label,
+		input[type="checkbox"]:disabled {
+		  opacity: 0.5;
+		  cursor: not-allowed;
+		}
+
+		input[type="checkbox"]:disabled + label {
+		  color: #999;
+		}
+	    /* ДОБАВЬ ЭТУ АНИМАЦИЮ В <style> В index.html */
+		@keyframes shake {
+		  0%, 100% { transform: translateX(0); }
+		  25% { transform: translateX(-10px); }
+		  75% { transform: translateX(10px); }
+		}
+	    /* ДОБАВЬ ЭТИ КРИТИЧЕСКИ ВАЖНЫЕ СТИЛИ В <style> В index.html */
+
+		/* Убеждаемся что GIF контейнеры НЕ блокируют анимацию */
+		.animated-sector-bg-container {
+		  will-change: clip-path;
+		  /* НЕ используем transform - он может блокировать анимацию */
+		}
+
+		.animated-sector-bg-gif {
+		  /* Принудительно включаем анимацию GIF */
+		  image-rendering: auto;
+		  animation-play-state: running !important;
+		}
+
+		/* Canvas должен быть ПОВЕРХ GIF но ПРОЗРАЧНЫМ в местах секторов с GIF */
+		.wheel-canvas {
+		  position: relative;
+		  z-index: 4 !important;
+		}
+	    .animated-sector-bg-container {
+		  will-change: clip-path;
+		  transition: clip-path 0.1s ease-out;
+		}
+
+		.animated-sector-bg-gif {
+		  image-rendering: auto;
+		  will-change: transform;
+		}
+
+		/* Убеждаемся что canvas находится поверх GIF фонов */
+		.wheel-canvas {
+		  position: relative;
+		  z-index: 3 !important;
+		}
 	    /* РАБОЧИЕ анимации для декораций */
 		@keyframes discoFlashWorking {
 		  0%, 100% { 
@@ -323,62 +372,187 @@
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-        }
+		.main-content {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: flex-start; /* изменено с center на flex-start */
+			padding: 20px;
+			position: relative;
+			min-height: calc(100vh - 60px); /* учитываем высоту status-bar */
+			overflow: auto;
+			gap: 20px; /* добавляем отступы между элементами */
+		}
+		.wheel-display-area {
+			width: 100%;
+			height: calc(100vh - 160px); /* увеличили доступную высоту */
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: relative;
+			overflow: visible; /* изменено с hidden на visible */
+			padding: 20px; /* добавили отступы чтобы колесо не касалось краев */
+		}
 
-        .wheel-container {
-            width: 500px;
-            height: 500px;
-            position: relative;
-            border-radius: 50%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            background: white;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+		.wheel-container {
+			width: 1070px;
+			height: 1070px;
+			position: relative;
+			border-radius: 50%;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+			background: white;
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+			flex-shrink: 0; /* предотвращает сжатие */
+			aspect-ratio: 1 / 1; /* гарантирует квадратную форму */
+		}
 
-        .wheel-canvas {
-            border-radius: 50%;
-            display: block !important;
-            width: 500px !important;
-            height: 500px !important;
-            max-width: 100%;
-            max-height: 100%;
-        }
+		.wheel-canvas {
+			border-radius: 50%;
+			display: block !important;
+			width: 1070px !important;
+			height: 1070px !important;
+			max-width: 100%;
+			max-height: 100%;
+			object-fit: contain; /* сохраняет пропорции */
+		}
+		/* ЗАМЕНИ СТИЛЬ .pointer В index.html */
+		.pointer {
+		  position: absolute;
+		  top: -43px;
+		  left: 50%;
+		  transform: translateX(-50%);
+		  width: 0;
+		  height: 0;
+		  border-left: 64px solid transparent;
+		  border-right: 64px solid transparent;
+		  border-top: 128px solid #ff4757;
+		  z-index: 100;
+		  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+		}
+		.controls {
+			margin-top: 20px; /* было 30px */
+			margin-bottom: 20px; /* добавлено для отступа от status-bar */
+			display: flex;
+			gap: 15px;
+			align-items: center;
+			flex-wrap: wrap;
+			justify-content: center;
+			position: relative;
+			z-index: 10; /* убеждаемся что кнопки поверх других элементов */
+		}
+		/* Большие экраны - полный размер */
+		/* Большие экраны - полный размер */
+		@media (min-width: 1400px) {
+		  .wheel-container {
+			width: 1070px;
+			height: 1070px;
+		  }
+		  
+		  .wheel-canvas {
+			width: 1070px !important;
+			height: 1070px !important;
+		  }
+		}
 
-        .pointer {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid #ff4757;
-            z-index: 100;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-        }
+		/* Средние экраны - пропорциональное уменьшение */
+		@media (max-width: 1399px) and (min-width: 1200px) {
+		  .wheel-container {
+			width: 800px;
+			height: 800px;
+		  }
+		  
+		  .wheel-canvas {
+			width: 800px !important;
+			height: 800px !important;
+		  }
+		  
+		  .pointer {
+			top: -32px;
+			border-left: 48px solid transparent;
+			border-right: 48px solid transparent;
+			border-top: 96px solid #ff4757;
+		  }
+		}
 
-        .controls {
-            margin-top: 30px;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+		/* Маленькие экраны */
+		@media (max-width: 1199px) and (min-width: 900px) {
+		  .wheel-container {
+			width: 600px;
+			height: 600px;
+		  }
+		  
+		  .wheel-canvas {
+			width: 600px !important;
+			height: 600px !important;
+		  }
+		  
+		  .pointer {
+			top: -24px;
+			border-left: 36px solid transparent;
+			border-right: 36px solid transparent;
+			border-top: 72px solid #ff4757;
+		  }
+		}
 
+		/* Планшеты */
+		@media (max-width: 899px) and (min-width: 600px) {
+		  .wheel-container {
+			width: 400px;
+			height: 400px;
+		  }
+		  
+		  .wheel-canvas {
+			width: 400px !important;
+			height: 400px !important;
+		  }
+		  
+		  .pointer {
+			top: -16px;
+			border-left: 24px solid transparent;
+			border-right: 24px solid transparent;
+			border-top: 48px solid #ff4757;
+		  }
+		  
+		  .main-content {
+			padding: 10px;
+			gap: 15px;
+		  }
+		}
+
+		/* Мобильные */
+		@media (max-width: 599px) {
+		  .wheel-container {
+			width: 300px;
+			height: 300px;
+		  }
+		  
+		  .wheel-canvas {
+			width: 300px !important;
+			height: 300px !important;
+		  }
+		  
+		  .pointer {
+			top: -12px;
+			border-left: 18px solid transparent;
+			border-right: 18px solid transparent;
+			border-top: 36px solid #ff4757;
+		  }
+		  
+		  .main-content {
+			padding: 5px;
+			gap: 10px;
+		  }
+		  
+		  .controls {
+			margin-top: 10px;
+			margin-bottom: 10px;
+		  }
+		}
         .btn {
             padding: 12px 24px;
             border: none;
@@ -634,15 +808,20 @@
             margin: 15px 0;
         }
 
-        .prize-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 15px auto;
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
+		.prize-image {
+			width: 150px;
+			height: 150px;
+			border-radius: 50%;
+			object-fit: cover;
+			margin: 15px auto;
+			border: 4px solid white;
+			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+			transition: transform 0.3s ease;
+		}
+
+		.prize-image:hover {
+			transform: scale(1.1);
+		}
 
         .overlay {
             position: fixed;
@@ -662,19 +841,20 @@
             visibility: visible;
         }
 
-        .status-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-        }
-
+		.status-bar {
+			position: fixed; /* было absolute */
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: rgba(255, 255, 255, 0.95);
+			padding: 10px 20px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			font-size: 12px;
+			z-index: 1000; /* высокий z-index чтобы быть поверх всего */
+			backdrop-filter: blur(10px); /* добавляем размытие фона */
+		}
         .file-input-wrapper {
             position: relative;
             display: inline-block;
@@ -703,12 +883,18 @@
             z-index: 1;
         }
 
-        .preset-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+		.preset-selector {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+			margin-bottom: 15px;
+		}
+
+		@media (max-width: 768px) {
+			.preset-selector {
+				grid-template-columns: 1fr;
+			}
+		}
 
         .preset-btn {
             padding: 10px;
@@ -882,26 +1068,29 @@
             <div class="tab-content active" id="presets-tab">
                 <h2>Wheel Presets</h2>
                 
-                <div class="section">
-                    <h3>Select number of sectors:</h3>
-                    <div class="preset-selector">
-                        <div class="preset-btn active" data-preset="sectors4">
-                            4 sectors
-                        </div>
-                        <div class="preset-btn" data-preset="sectors8">
-                            8 sectors
-                        </div>
-                        <div class="preset-btn" data-preset="sectors16">
-                            16 sectors
-                        </div>
-                        <div class="preset-btn" data-preset="sectors32">
-                            32 sectors
-                        </div>
-                    </div>
-                    <p style="font-size: 12px; color: #666;">
-                        Each preset automatically configures correct angles for precise winner determination.
-                    </p>
-                </div>
+                <div class="preset-selector">
+					<div class="preset-btn active" data-preset="sectors4">
+						4 sectors
+					</div>
+					<div class="preset-btn" data-preset="sectors8">
+						8 sectors
+					</div>
+					<div class="preset-btn" data-preset="sectors10">
+						10 sectors
+					</div>
+					<div class="preset-btn" data-preset="sectors12">
+						12 sectors
+					</div>
+					<div class="preset-btn" data-preset="sectors14">
+						14 sectors
+					</div>
+					<div class="preset-btn" data-preset="sectors16">
+						16 sectors
+					</div>
+					<div class="preset-btn" data-preset="sectors20">
+						20 sectors
+					</div>
+				</div>
 
                 <div class="section">
                     <h3>Quick Setup</h3>
@@ -921,10 +1110,16 @@
                     <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
                         Use presets to change the number of sectors. Here you can configure names, weights and images.
                     </p>
+					<div class="form-group">
+					  <label for="hide-sector-names">
+						<input type="checkbox" id="hide-sector-names"checked>
+						Hide Names
+					  </label>
+					</div>
                     <div class="items-list" id="items-list"></div>
                 </div>
             </div>
-
+            
             <!-- Tab: Design -->
             <div class="tab-content" id="design-tab">
                 <h2>Wheel Design</h2>
@@ -1009,7 +1204,13 @@
 						</button>
 					</div>
 					
-					<button class="btn btn-primary" onclick="applySelectedTheme()">Apply Theme</button>
+					<div style="margin-top: 10px;">
+						<button class="btn btn-primary" onclick="applySelectedTheme()">Apply Theme</button>
+					</div>
+					<p style="font-size: 12px; color: #666; margin-top: 10px;">
+						💡 Apply Theme preserves your custom names, weights, images, and win/lose settings.<br>
+						Reset to Default restores original preset values for all sectors.
+					</p>
 				</div>
                 <div class="section">
                     <h3>Item Colors</h3>
@@ -1071,6 +1272,7 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <button class="btn-small btn-secondary" onclick="clearAllItemColors()">Clear All Colors</button>
                         <button class="btn-small btn-secondary" onclick="copyColorsFromScheme()">Copy from Scheme</button>
+						<button class="btn-small btn-secondary" onclick="clearAllSectorBackgrounds()">Clear Sector Backgrounds</button>
                     </div>
                     <p class="help-text">
                         "Clear All Colors" - removes individual sector colors<br>
@@ -1106,21 +1308,179 @@
                         <button class="btn-small btn-danger" onclick="removeWheelBorderImage()">Remove Border</button>
                     </div>
                 </div>
+				<div class="settings-section">
+				  <h3>🎭 Limits Overlay</h3>
+				  <div class="settings-group">
+					<label for="exhausted-overlay-input">Load PNG Overlay</label>
+					<input type="file" id="exhausted-overlay-input" accept="image/png" 
+						   onchange="loadExhaustedOverlay(this.files[0])">
+					
+					<div class="overlay-preview-container" style="margin-top: 10px;">
+					  <img id="exhausted-overlay-preview" 
+						   style="display: none; max-width: 100px; max-height: 100px; border: 1px solid #ccc; border-radius: 5px;">
+					</div>
+					
+					<button onclick="removeExhaustedOverlay()" 
+							style="margin-top: 10px; padding: 5px 15px; background: #ff6b6b; color: white; border: none; border-radius: 5px; cursor: pointer;">
+					  🗑️ Delete Overlay
+					</button>
+				  </div>
+				</div>
+				<div class="section">
+					<h3>🖼️ Prize Image Settings</h3>
+					
+					<!-- Чекбокс для включения/выключения отображения -->
+					<div class="form-group">
+						<label>
+							<input type="checkbox" id="show-prize-image" checked onchange="updateShowPrizeImage()"> 
+							Show prize image in popup
+						</label>
+					</div>
+					
+					<!-- Размер изображения -->
+					<div class="form-group">
+						<label>Image Size (px):</label>
+						<input type="range" id="prize-image-size" min="80" max="300" value="150" 
+							   oninput="updatePrizeImageSize(this.value)">
+						<span id="prize-size-value">150px</span>
+					</div>
+					
+					<!-- Масштаб изображения -->
+					<div class="form-group">
+						<label>Image Scale:</label>
+						<input type="range" id="prize-image-scale" min="100" max="200" value="150" 
+							   oninput="updatePrizeImageScale()">
+						<span id="prize-scale-value">150%</span>
+					</div>
+					
+					<!-- Горизонтальная позиция -->
+					<div class="form-group">
+						<label>Image Horizontal Position:</label>
+						<input type="range" id="prize-image-offset-x" min="-100" max="100" value="0" 
+							   oninput="updatePrizeImageOffset()">
+						<span id="prize-offset-x-value">Center</span>
+					</div>
+					
+					<!-- Вертикальная позиция -->
+					<div class="form-group">
+						<label>Image Vertical Position:</label>
+						<input type="range" id="prize-image-offset-y" min="-100" max="100" value="0" 
+							   oninput="updatePrizeImageOffset()">
+						<span id="prize-offset-y-value">Center</span>
+					</div>
+					
+					<!-- Кнопки управления -->
+					<div class="form-group">
+						<button class="btn btn-secondary" onclick="resetPrizeImageSettings()">Reset to Default</button>
+						<button class="btn btn-secondary" onclick="testPrizeImageSettings()">Test Settings</button>
+					</div>
+					
+					<!-- Подсказка -->
+					<p style="font-size: 12px; color: #666; margin-top: 10px;">
+						💡 Uncheck "Show prize image" to display only text in the popup. Use position sliders to move the image inside the circular frame. Negative values move left/up, positive values move right/down.
+					</p>
+				</div>
 
                 <div class="section">
-                    <h3>Winner Window Style</h3>
-                    <div class="form-group">
-                        <label>Winner Window Background:</label>
-                        <div class="file-input-wrapper">
-                            <input type="file" id="popup-background" accept="image/*">
-                            Select Background
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Window Text Color:</label>
-                        <input type="color" class="color-input" id="popup-text-color" value="#ffffff">
-                    </div>
-                </div>
+					<h3>Winner Window Style</h3>
+					<div class="form-group">
+						<label>Winner Window Background:</label>
+						<div class="file-input-wrapper">
+							<input type="file" id="win-popup-background" accept="image/*">
+							Select Win Background
+						</div>
+						<button class="btn-small btn-danger" onclick="removeWinPopupBackground()">Remove</button>
+					</div>
+					<div class="form-group">
+						<label>Winner Text Color:</label>
+						<input type="color" class="color-input" id="win-popup-text-color" value="#ffffff">
+					</div>
+				</div>
+
+				<div class="section">
+					<h3>Loser Window Style</h3>
+					<div class="form-group">
+						<label>Loser Window Background:</label>
+						<div class="file-input-wrapper">
+							<input type="file" id="lose-popup-background" accept="image/*">
+							Select Lose Background
+						</div>
+						<button class="btn-small btn-danger" onclick="removeLosePopupBackground()">Remove</button>
+					</div>
+					<div class="form-group">
+						<label>Loser Text Color:</label>
+						<input type="color" class="color-input" id="lose-popup-text-color" value="#ffffff">
+					</div>
+				</div>
+				<!-- ЗАМЕНИ СЕКЦИЮ Winner Messages В custom-tab НА ЭТУ РАСШИРЕННУЮ ВЕРСИЮ -->
+				<div class="section">
+					<h3>Result Messages</h3>
+					
+					<!-- Сообщения победы -->
+					<h4 style="color: #00b894; margin-bottom: 10px;">🏆 Win Messages</h4>
+					<div class="form-group">
+						<label>Win Header:</label>
+						<input type="text" class="form-control" id="congratulations-text" 
+							   value="🎉 Congratulations! 🎉" 
+							   placeholder="Enter congratulations message"
+							   onchange="saveResultMessages()">
+					</div>
+					<div class="form-group">
+						<label>Win Title:</label>
+						<input type="text" class="form-control" id="winner-result-title" 
+							   value="You Won!" 
+							   placeholder="Enter win title"
+							   onchange="saveResultMessages()">
+					</div>
+					
+					<!-- Сообщения поражения -->
+					<h4 style="color: #e74c3c; margin-top: 20px; margin-bottom: 10px;">💔 Lose Messages</h4>
+					<div class="form-group">
+						<label>Lose Header:</label>
+						<input type="text" class="form-control" id="lose-header-text" 
+							   value="😞 Better luck next time! 😞" 
+							   placeholder="Enter lose message"
+							   onchange="saveResultMessages()">
+					</div>
+					<div class="form-group">
+						<label>Lose Title:</label>
+						<input type="text" class="form-control" id="lose-result-title" 
+							   value="You Lost!" 
+							   placeholder="Enter lose title"
+							   onchange="saveResultMessages()">
+					</div>
+					
+					<div style="margin-top: 15px; display: flex; gap: 10px;">
+						<button class="btn btn-success" onclick="previewWinMessage()">Preview Win</button>
+						<button class="btn btn-danger" onclick="previewLoseMessage()">Preview Lose</button>
+					</div>
+					<p style="font-size: 12px; color: #666; margin-top: 10px;">
+						💡 Customize messages for both win and lose results. Set win/lose for each sector in Items tab.
+					</p>
+				</div>
+				<div class="section">
+					<h3>Pointer/Arrow Style</h3>
+					<div class="form-group">
+						<label>Pointer Type:</label>
+						<select class="form-control" id="pointer-type" onchange="changePointerType()">
+							<option value="default">Default Arrow</option>
+							<option value="custom">Custom Image</option>
+						</select>
+					</div>
+					<div class="customization-section" id="pointer-section">
+						<p>Upload PNG/GIF for custom pointer (Recommended size: 80x80px)</p>
+						<div class="file-input-wrapper">
+							<input type="file" id="pointer-image" accept="image/*">
+							Select Pointer Image
+						</div>
+						<button class="btn-small btn-danger" onclick="removePointerImage()">Remove Pointer</button>
+					</div>
+					<div class="form-group">
+						<label>Pointer Size:</label>
+						<input type="range" class="range-input" id="pointer-size" min="50" max="200" value="100" onchange="updatePointerSize()">
+						<span id="pointer-size-value">100</span>%
+					</div>
+				</div>
             </div>
 
             <!-- Tab: Settings -->
@@ -1140,6 +1500,52 @@
                         <span id="spin-duration-value">4</span>
                     </div>
                 </div>
+				<div class="section">
+					<h3>🔄 Continuous Spin Mode</h3>
+					<div class="form-group">
+						<label>
+							<input type="checkbox" id="continuous-spin-mode" onchange="toggleContinuousSpinMode()"> 
+							Enable Continuous Spin Mode
+						</label>
+					</div>
+					<div class="form-group" id="continuous-speed-control" style="display: none;">
+						<label>Continuous Speed:</label>
+						<input type="range" class="range-input" id="continuous-speed" min="50" max="200" value="100" onchange="updateContinuousSpeed()">
+						<span id="continuous-speed-value">100</span>
+					</div>
+					<p style="font-size: 12px; color: #666; margin-top: 10px;">
+						💡 In continuous mode, wheel spins constantly. Click/Space to start slowing down and stop.
+					</p>
+					<div class="setting-group">
+					  <label>
+                       <input type="checkbox" id="instant-stop-mode" onchange="toggleInstantStopMode()"> 
+						Instant Stop mode
+					  </label>
+					  <small>Press on Space or Left Mouse Button</small>
+					</div>
+					<div class="form-group">
+					  <label for="instant-stop-acceleration">
+						<input type="checkbox" id="instant-stop-acceleration" checked>
+						2 click Mode
+					  </label>
+					</div>
+					<div id="instant-stop-speed-controls" style="margin-top: 10px;">
+					  <div class="form-group">
+						<label for="single-click-speed">One Click mode Speed <span id="single-click-speed-value">150</span></label>
+						<input type="range" id="single-click-speed" min="50" max="300" value="150" step="10">
+					  </div>
+					  
+					  <div class="form-group">
+						<label for="double-click-min-speed">Two click mode MIN.SPEED: <span id="double-click-min-speed-value">30</span></label>
+						<input type="range" id="double-click-min-speed" min="10" max="100" value="30" step="5">
+					  </div>
+					  
+					  <div class="form-group">
+						<label for="double-click-max-speed">Two click mode MAX.SPEED: <span id="double-click-max-speed-value">250</span></label>
+						<input type="range" id="double-click-max-speed" min="150" max="500" value="250" step="10">
+					  </div>
+					</div>
+				</div>
 
                 <div class="section">
 				<h3>Sound</h3>
@@ -1207,51 +1613,89 @@
                 </div>
 
                 <div class="section">
-                    <h3>Project</h3>
-                    <button class="btn btn-secondary" onclick="saveProject()">Save Project</button>
-                    <button class="btn btn-secondary" onclick="loadProjectFile()">Load Project</button>
-                    <input type="file" id="project-file" accept=".json" style="display: none;" onchange="handleProjectFile(this)">
-                </div>
+					<h3>Project</h3>
+					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+						<button class="btn btn-secondary" onclick="saveProject()">Quick Save</button>
+						<button class="btn btn-secondary" onclick="saveProjectWithName()">Save As...</button>
+					</div>
+					<button class="btn btn-secondary" onclick="loadProjectFile()" style="width: 100%;">Load Project</button>
+					<input type="file" id="project-file" accept=".json" style="display: none;" onchange="handleProjectFile(this)">
+					<p style="font-size: 12px; color: #666; margin-top: 10px;">
+						💡 Projects now save ALL settings: images, sounds, themes, passwords, limits, and customizations
+					</p>
+					<button onclick="confirmResetToDefault()" class="reset-button" style="
+					  background: linear-gradient(45deg, #ff4757, #ff3742);
+					  color: white;
+					  border: none;
+					  padding: 10px 20px;
+					  border-radius: 5px;
+					  cursor: pointer;
+					  font-weight: bold;
+					  margin: 5px;
+					  transition: all 0.3s;
+					" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+					  🔄 Reset to Default
+					</button>
+				</div>
+				<div class="section">
+					<h3>Exhibition Mode Security</h3>
+					<div class="form-group">
+						<label>Exit Password:</label>
+						<input type="password" class="form-control" id="exhibition-password" 
+							   placeholder="Set password to exit exhibition mode" 
+							   onchange="saveExhibitionPassword()">
+					</div>
+					<div class="form-group">
+						<label>
+							<input type="checkbox" id="require-password" onchange="saveExhibitionPassword()"> 
+							Require password to exit exhibition mode
+						</label>
+					</div>
+					<p style="font-size: 12px; color: #666; margin-top: 10px;">
+						💡 When enabled, ESC key will ask for password before exiting exhibition mode
+					</p>
+				</div>
             </div>
         </div>
 
         <!-- Main area with wheel -->
         <div class="main-content">
-            <div class="wheel-container" id="wheel-container">
-                <div class="pointer"></div>
-                <canvas class="wheel-canvas" id="wheel-canvas" width="500" height="500"></canvas>
-            </div>
+			<div class="wheel-container" id="wheel-container">
+				<div class="pointer"></div>
+				<canvas class="wheel-canvas" id="wheel-canvas" width="1070" height="1070"></canvas>
+			</div>
 
-            <div class="controls">
-                <button class="btn btn-primary" id="spin-btn" onclick="spinWheel()">SPIN WHEEL</button>
-                <button class="btn btn-secondary" onclick="stopWheel()">STOP</button>
-                <button class="btn btn-secondary" onclick="resetWheel()">RESET</button>
-                <button class="btn btn-secondary" onclick="exportImage()">EXPORT</button>
+			<div class="controls">
+				<button class="btn btn-primary" id="spin-btn" onclick="spinWheel()">SPIN WHEEL</button>
+				<button class="btn btn-secondary" onclick="stopWheel()">STOP</button>
+				<button class="btn btn-secondary" onclick="resetWheel()">RESET</button>
+				<button class="btn btn-secondary" onclick="exportImage()">EXPORT</button>
 				<button class="btn btn-secondary" onclick="toggleExhibitionMode()">EXHIBITION MODE</button>
-            </div>
+			</div>
 
-            <div class="status-bar">
+			<div class="status-bar">
 				<div>
 					<button onclick="switchLanguage('en')" style="margin-right: 5px; padding: 2px 6px;">EN</button>
 					<button onclick="switchLanguage('he')" style="padding: 2px 6px;">HE</button>
-				</div>			
-                <span>Items: <span id="items-count">0</span></span>
-                <span>Preset: <span id="current-preset">4 sectors</span></span>
-                <span>Last Result: <span id="last-result">-</span></span>
-                <span>Total Spins: <span id="total-spins">0</span></span>
-            </div>
-        </div>
+				</div>          
+				<span>Items: <span id="items-count">0</span></span>
+				<span>Preset: <span id="current-preset">4 sectors</span></span>
+				<span>Last Result: <span id="last-result">-</span></span>
+				<span>Total Spins: <span id="total-spins">0</span></span>
+			</div>
+		</div>
     </div>
 
     <!-- Result popup -->
     <div class="overlay" id="overlay"></div>
-    <div class="result-popup" id="result-popup">
-        <h3>🎉 Congratulations! 🎉</h3>
-        <img id="prize-image" class="prize-image" style="display: none;">
-        <div class="winner" id="winner-text"></div>
-        <button class="btn btn-primary" onclick="closeResultPopup()">Close</button>
-        <button class="btn btn-secondary" onclick="spinAgain()">Spin Again</button>
-    </div>
+	<div class="result-popup" id="result-popup">
+		<h3 id="congratulations-header">🎉 Congratulations! 🎉</h3>
+		<p id="popup-result-title" style="font-size: 18px; margin: 10px 0;">Result!</p>
+		<img id="prize-image" class="prize-image" style="display: none;">
+		<div class="winner" id="winner-text"></div>
+		<button class="btn btn-primary" onclick="closeResultPopup()">Close</button>
+		<button class="btn btn-secondary" onclick="spinAgain()">Spin Again</button>
+	</div>
 
     <!-- Connect scripts in correct order -->
     <script src="utils.js"></script>

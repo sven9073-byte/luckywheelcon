@@ -202,7 +202,7 @@ class SoundManager {
       reader.readAsDataURL(file);
     });
   }
-  
+
   // Удаление кастомного звука
   removeCustomSound(type) {
     if (this.sounds[type]) {
@@ -242,23 +242,22 @@ class SoundManager {
   }
   
   // Воспроизведение звука вращения
-  playSpinSound() {
-    if (!this.enabled) return;
-    
-    if (this.hasCustomSound('spin')) {
-      try {
-        const audio = this.sounds.spin.audio.cloneNode();
-        audio.volume = this.volume;
-        audio.play().catch(e => console.log('Ошибка воспроизведения:', e));
-      } catch (error) {
-        console.log('Ошибка кастомного звука, используем fallback');
-        this.playDefaultSpinSound();
-      }
-    } else {
+playSpinSound() {
+  if (!this.enabled) return;
+  
+  if (this.hasCustomSound('spin')) {
+    try {
+      const audio = this.sounds.spin.audio.cloneNode();
+      audio.volume = this.volume;
+      audio.play().catch(e => console.log('Ошибка воспроизведения:', e));
+    } catch (error) {
+      console.log('Ошибка кастомного звука, используем fallback');
       this.playDefaultSpinSound();
     }
+  } else {
+    this.playDefaultSpinSound();
   }
-  
+}
   // Воспроизведение звука выигрыша
   playWinSound() {
     if (!this.enabled) return;

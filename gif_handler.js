@@ -120,14 +120,39 @@ class GIFAnimationHandler {
   }
 
   // Удаляем ободок GIF
-  removeWheelBorderGIF() {
-    const existing = this.gifOverlays.get('wheelBorder');
-    if (existing && existing.parentNode) {
-      existing.parentNode.removeChild(existing);
-      this.gifOverlays.delete('wheelBorder');
-      this.gifElements.delete('wheelBorder');
+// Удаляем ободок GIF (улучшенная версия)
+removeWheelBorderGIF() {
+    console.log('🎬 Удаляем GIF ободок...');
+    
+    // Удаляем из кеша элементов
+    const gifElement = this.gifElements.get('wheelBorder');
+    const gifOverlay = this.gifOverlays.get('wheelBorder');
+    
+    if (gifElement && gifElement.parentNode) {
+        console.log('➜ Удаляем GIF элемент');
+        gifElement.parentNode.removeChild(gifElement);
     }
-  }
+    
+    if (gifOverlay && gifOverlay.parentNode) {
+        console.log('➜ Удаляем GIF контейнер');
+        gifOverlay.parentNode.removeChild(gifOverlay);
+    }
+    
+    // Очищаем кеш
+    this.gifElements.delete('wheelBorder');
+    this.gifOverlays.delete('wheelBorder');
+    
+    // Дополнительно: удаляем все элементы с классами GIF ободков
+    const allGifBorders = document.querySelectorAll(
+        '.animated-wheel-border-gif, .animated-wheel-border-container, .stretched-gif-border'
+    );
+    allGifBorders.forEach(el => {
+        console.log('➜ Принудительно удаляем:', el.className);
+        el.remove();
+    });
+    
+    console.log('✅ GIF ободок полностью удален');
+}
 
   // Создаем анимированный GIF для элемента колеса
   createItemGIF(dataURL, itemIndex, wheelContainer) {
@@ -216,14 +241,16 @@ class GIFAnimationHandler {
   }
 
   // Обновляем позиции всех GIF элементов при вращении колеса
-  updateAllItemGIFPositions(wheelCanvas) {
-    this.gifOverlays.forEach((container, key) => {
-      if (key.startsWith('item-')) {
-        const itemIndex = parseInt(key.replace('item-', ''));
-        this.updateItemGIFPosition(itemIndex, wheelCanvas, container);
-      }
-    });
-  }
+// ЗАМЕНИ updateAllItemGIFPositions В gif_handler.js (убери сектора)
+	updateAllItemGIFPositions(wheelCanvas) {
+	  this.gifOverlays.forEach((container, key) => {
+		if (key.startsWith('item-')) {
+		  const itemIndex = parseInt(key.replace('item-', ''));
+		  this.updateItemGIFPosition(itemIndex, wheelCanvas, container);
+		}
+		// Убрали всю логику для sector-bg-
+	  });
+	}
 
   // Создаем анимированный фон для popup
   createPopupBackgroundGIF(dataURL, popupElement) {
@@ -285,6 +312,7 @@ class GIFAnimationHandler {
     this.gifElements.clear();
     this.gifOverlays.clear();
   }
+ 
 
   // Приостанавливаем/возобновляем все анимации (для оптимизации)
   pauseAll() {

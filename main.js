@@ -39,82 +39,6 @@ function createWindow() {
 function createMenu() {
   const template = [
     {
-      label: 'File',
-      submenu: [
-        {
-          label: 'New Project',
-          accelerator: 'CmdOrCtrl+N',
-          click: () => {
-            mainWindow.webContents.send('menu-new-project');
-          }
-        },
-        {
-          label: 'Open Project',
-          accelerator: 'CmdOrCtrl+O',
-          click: async () => {
-            const result = await dialog.showOpenDialog(mainWindow, {
-              properties: ['openFile'],
-              filters: [
-                { name: 'Wheel Projects', extensions: ['json'] },
-                { name: 'All Files', extensions: ['*'] }
-              ]
-            });
-
-            if (!result.canceled && result.filePaths.length > 0) {
-              try {
-                const data = fs.readFileSync(result.filePaths[0], 'utf8');
-                const projectData = JSON.parse(data);
-                mainWindow.webContents.send('menu-load-project', projectData);
-              } catch (error) {
-                dialog.showErrorBox('Ошибка', 'Не удалось загрузить проект: ' + error.message);
-              }
-            }
-          }
-        },
-        {
-          label: 'Save Project',
-          accelerator: 'CmdOrCtrl+S',
-          click: () => {
-            mainWindow.webContents.send('menu-save-project');
-          }
-        },
-        { type: 'separator' },
-        {
-          label: 'Export JPG',
-          click: () => {
-            mainWindow.webContents.send('menu-export-image');
-          }
-        },
-        { type: 'separator' },
-        {
-          label: 'Close the App',
-          accelerator: process.platform === 'darwin' ? 'Cmd+Q' : 'Ctrl+Q',
-          click: () => {
-            app.quit();
-          }
-        }
-      ]
-    },
-    {
-      label: 'Change',
-      submenu: [
-        {
-          label: 'Undo',
-          accelerator: 'CmdOrCtrl+Z',
-          click: () => {
-            mainWindow.webContents.send('menu-undo');
-          }
-        },
-        {
-          label: 'Repeat',
-          accelerator: 'CmdOrCtrl+Y',
-          click: () => {
-            mainWindow.webContents.send('menu-redo');
-          }
-        }
-      ]
-    },
-    {
       label: 'View',
       submenu: [
         {
@@ -175,6 +99,21 @@ ipcMain.handle('save-project-dialog', async (event, data) => {
     }
   }
   return { success: false, cancelled: true };
+});
+
+ipcMain.handle('toggle-fullscreen', async (event, enable) => {
+  const mainWindow = BrowserWindow.getFocusedWindow();
+  if (mainWindow) {
+    if (enable) {
+      mainWindow.setFullScreen(true);
+      console.log('🖥️ Fullscreen enabled');
+    } else {
+      mainWindow.setFullScreen(false);
+      console.log('🖥️ Fullscreen disabled');
+    }
+    return mainWindow.isFullScreen();
+  }
+  return false;
 });
 
 ipcMain.handle('export-image-dialog', async (event, dataUrl) => {

@@ -5,47 +5,82 @@ const WheelPresets = {
   sectors4: {
     count: 4,
     angleOffset: 45,
-    name: "4 Sectors", // было "4 сектора"
+    name: "4 Sectors",
     defaultItems: [
-      { label: 'Prize 1', weight: 1, backgroundColor: '#ff0000' }, // было 'Приз 1'
-      { label: 'Prize 2', weight: 1, backgroundColor: '#00ff00' },
-      { label: 'Prize 3', weight: 1, backgroundColor: '#0000ff' },
-      { label: 'Prize 4', weight: 1, backgroundColor: '#ffff00' }
+      { label: 'Prize 1', weight: 1, backgroundColor: '#ff0000', isWin: true },
+      { label: 'Prize 2', weight: 1, backgroundColor: '#00ff00', isWin: true },
+      { label: 'Prize 3', weight: 1, backgroundColor: '#0000ff', isWin: true },
+      { label: 'Prize 4', weight: 1, backgroundColor: '#ffff00', isWin: true }
     ]
   },
   sectors8: {
     count: 8,
     angleOffset: 22.5,
-    name: "8 Sectors", // было "8 секторов"
+    name: "8 Sectors",
     defaultItems: [
-      { label: 'Prize 1', weight: 1, backgroundColor: '#ff0000' },
-      { label: 'Prize 2', weight: 1, backgroundColor: '#ff8000' },
-      { label: 'Prize 3', weight: 1, backgroundColor: '#ffff00' },
-      { label: 'Prize 4', weight: 1, backgroundColor: '#00ff00' },
-      { label: 'Prize 5', weight: 1, backgroundColor: '#00ffff' },
-      { label: 'Prize 6', weight: 1, backgroundColor: '#0000ff' },
-      { label: 'Prize 7', weight: 1, backgroundColor: '#8000ff' },
-      { label: 'Prize 8', weight: 1, backgroundColor: '#ff00ff' }
+      { label: 'Prize 1', weight: 1, backgroundColor: '#ff0000', isWin: true },
+      { label: 'Prize 2', weight: 1, backgroundColor: '#ff8000', isWin: true },
+      { label: 'Prize 3', weight: 1, backgroundColor: '#ffff00', isWin: true },
+      { label: 'Prize 4', weight: 1, backgroundColor: '#00ff00', isWin: true },
+      { label: 'Prize 5', weight: 1, backgroundColor: '#00ffff', isWin: true },
+      { label: 'Prize 6', weight: 1, backgroundColor: '#0000ff', isWin: true },
+      { label: 'Prize 7', weight: 1, backgroundColor: '#8000ff', isWin: true },
+      { label: 'Prize 8', weight: 1, backgroundColor: '#ff00ff', isWin: true }
     ]
   },
+  sectors10: {
+    count: 10,
+    angleOffset: 18,
+    name: "10 Sectors",
+    defaultItems: Array.from({length: 10}, (_, i) => ({
+      label: `Prize ${i + 1}`,
+      weight: 1,
+      backgroundColor: `hsl(${(i * 360) / 10}, 70%, 60%)`,
+      isWin: true
+    }))
+  },
+  sectors12: {
+    count: 12,
+    angleOffset: 15,
+    name: "12 Sectors",
+    defaultItems: Array.from({length: 12}, (_, i) => ({
+      label: `Prize ${i + 1}`,
+      weight: 1,
+      backgroundColor: `hsl(${(i * 360) / 12}, 70%, 60%)`,
+      isWin: true
+    }))
+  },
+	sectors14: {
+	  count: 14,
+	  angleOffset: 12, // 360/14/2 = 12.857...
+	  name: "14 Sectors",//исправить потом
+	  defaultItems: Array.from({length: 14}, (_, i) => ({
+		label: `Prize ${i + 1}`,
+		weight: 1,
+		backgroundColor: `hsl(${(i * 360) / 14}, 70%, 60%)`,
+		isWin: true
+	  }))
+	},
   sectors16: {
     count: 16,
     angleOffset: 11.25,
-    name: "16 Sectors", // было "16 секторов"
+    name: "16 Sectors",
     defaultItems: Array.from({length: 16}, (_, i) => ({
-      label: `Prize ${i + 1}`, // было `Приз ${i + 1}`
+      label: `Prize ${i + 1}`,
       weight: 1,
-      backgroundColor: `hsl(${(i * 360) / 16}, 70%, 60%)`
+      backgroundColor: `hsl(${(i * 360) / 16}, 70%, 60%)`,
+      isWin: true
     }))
   },
-  sectors32: {
-    count: 32,
-    angleOffset: 5.625,
-    name: "32 Sectors", // было "32 сектора"
-    defaultItems: Array.from({length: 32}, (_, i) => ({
-      label: `Prize ${i + 1}`, // было `Приз ${i + 1}`
+  sectors20: {
+    count: 20,
+    angleOffset: 9,
+    name: "20 Sectors",
+    defaultItems: Array.from({length: 20}, (_, i) => ({
+      label: `Prize ${i + 1}`,
       weight: 1,
-      backgroundColor: `hsl(${(i * 360) / 32}, 70%, 60%)`
+      backgroundColor: `hsl(${(i * 360) / 20}, 70%, 60%)`,
+      isWin: true
     }))
   }
 };
@@ -146,6 +181,7 @@ const Defaults = Object.freeze({
     labelColor: null,
     value: null,
     weight: 1,
+	sectorBackgroundImage: null,
   },
 });
 
@@ -175,6 +211,7 @@ class Item {
     this.labelColor = props.labelColor;
     this.value = props.value;
     this.weight = props.weight;
+	this.sectorBackgroundImage = props.sectorBackgroundImage;  // ← ДОБАВЬ ЭТУ СТРОЧКУ
   }
   
   // Геттеры и сеттеры
@@ -235,6 +272,15 @@ class Item {
       this._weight = Defaults.item.weight;
     }
   }
+	get sectorBackgroundImage() { return this._sectorBackgroundImage; }
+	set sectorBackgroundImage(val) {
+	  if (val instanceof HTMLImageElement || typeof val === 'string' || val === null) {
+		this._sectorBackgroundImage = val;
+	  } else {
+		this._sectorBackgroundImage = null;
+	  }
+	  this._wheel.refresh();
+	}  
   
   getIndex() {
     const index = this._wheel.items.findIndex(i => i === this);
@@ -403,42 +449,31 @@ class Wheel {
   }
   
   // ИСПРАВЛЕННЫЙ метод определения текущего индекса с поддержкой пресетов
-  refreshCurrentIndex(angles = []) {
-    if (this._items.length === 0) {
-      this._currentIndex = -1;
-      return;
-    }
-    
-    // Получаем настройки текущего пресета
-    const preset = WheelPresets[this._preset] || WheelPresets.sectors4;
-    
-    // Используем ПРАВИЛЬНЫЙ сдвиг из пресета
-    let normalizedAngle = ((this._rotation || 0) + preset.angleOffset) % 360;
-    if (normalizedAngle < 0) normalizedAngle += 360;
-    
-    const segmentAngle = 360 / this._items.length;
-    
-    // ИСПРАВЛЯЕМ направление для правильного определения
-    const currentIndex = Math.floor((360 - normalizedAngle) / segmentAngle) % this._items.length;
-    
-    console.log('🎯 Определение индекса:', {
-      rotation: this._rotation,
-      preset: this._preset,
-      angleOffset: preset.angleOffset,
-      normalizedAngle: normalizedAngle,
-      segmentAngle: segmentAngle,
-      currentIndex: currentIndex,
-      itemsLength: this._items.length
-    });
-    
-    if (this._currentIndex !== currentIndex) {
-      this._currentIndex = currentIndex;
-      if (!this._isInitialising) {
-        this.raiseEvent_onCurrentIndexChange();
-      }
-    }
+refreshCurrentIndex(angles = []) {
+  if (this._items.length === 0) {
+    this._currentIndex = -1;
+    return;
   }
   
+  // Получаем настройки текущего пресета
+  const preset = WheelPresets[this._preset] || WheelPresets.sectors4;
+  
+  // Используем ПРАВИЛЬНЫЙ сдвиг из пресета
+  let normalizedAngle = ((this._rotation || 0) + preset.angleOffset) % 360;
+  if (normalizedAngle < 0) normalizedAngle += 360;
+  
+  const segmentAngle = 360 / this._items.length;
+  
+  // ИСПРАВЛЯЕМ направление для правильного определения
+  const currentIndex = Math.floor((360 - normalizedAngle) / segmentAngle) % this._items.length;
+  
+  if (this._currentIndex !== currentIndex) {
+    this._currentIndex = currentIndex;
+    if (!this._isInitialising) {
+      this.raiseEvent_onCurrentIndexChange();
+    }
+  }
+}
   // Главный метод отрисовки с поддержкой изображений
   draw(now = 0) {
     this._frameRequestId = null;
@@ -475,70 +510,77 @@ class Wheel {
     const radius = this._actualRadius;
     
     // Отрисовка сегментов
-    const anglePerSegment = (2 * Math.PI) / this._items.length;
-    const rotationRad = (this._rotation || 0) * Math.PI / 180;
-    
-    for (let i = 0; i < this._items.length; i++) {
-      const item = this._items[i];
-      const startAngle = i * anglePerSegment + rotationRad - Math.PI / 2;
-      const endAngle = (i + 1) * anglePerSegment + rotationRad - Math.PI / 2;
-      
-      // Цвет сегмента
-      const color = item.backgroundColor || 
-                   this._itemBackgroundColors[i % this._itemBackgroundColors.length] ||
-                   ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'][i % 6];
-      
-      // Рисуем сегмент
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-      ctx.closePath();
-      ctx.fill();
-      
-      // Граница сегмента
-      if (this._borderWidth > 0) {
-        ctx.strokeStyle = this._borderColor || '#333';
-        ctx.lineWidth = this._borderWidth || 2;
-        ctx.stroke();
-      }
-      
-      // Изображение сектора
-      if (item.image) {
-        this.drawItemImage(ctx, item.image, centerX, centerY, radius * 0.6, startAngle + anglePerSegment / 2);
-      }
-      
-      // Текст
-      if (item.label) {
-		  const textAngle = startAngle + anglePerSegment / 2;
-		  const textRadius = radius * (item.image ? 0.3 : 0.7); // Ближе к центру если есть изображение
-		  const textX = centerX + Math.cos(textAngle) * textRadius;
-		  const textY = centerY + Math.sin(textAngle) * textRadius;
-		  
-		  ctx.fillStyle = this._itemLabelColors[0] || '#ffffff';
-		  
-		  // ИСПРАВЛЕНИЕ: Используем itemLabelFontSizeMax если он установлен
-		  const fontSize = this._itemLabelFontSizeMax || this._itemLabelFontSize || 16;
-		  ctx.font = `${fontSize}px ${this.itemLabelFont || 'Arial'}`;
-		  
-		  ctx.textAlign = 'center';
-		  ctx.textBaseline = 'middle';
-		  
-		  // Тень для лучшей читаемости
-		  ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-		  ctx.shadowBlur = 2;
-		  ctx.shadowOffsetX = 1;
-		  ctx.shadowOffsetY = 1;
-		  
-		  ctx.fillText(item.label, textX, textY);
-		  
-		  // Сбрасываем тень
-		  ctx.shadowColor = 'transparent';
-		  ctx.shadowBlur = 0;
-		  ctx.shadowOffsetX = 0;
-		  ctx.shadowOffsetY = 0;
-	    }
-    }
+// Отрисовка сегментов - ЗАМЕНИ СУЩЕСТВУЮЩИЙ КОД ЭТИМ
+	const anglePerSegment = (2 * Math.PI) / this._items.length;
+	const rotationRad = (this._rotation || 0) * Math.PI / 180;
+
+// В методе draw(), ЗАМЕНИ ЦИКЛ ОТРИСОВКИ СЕКТОРОВ НА ЭТО:
+	for (let i = 0; i < this._items.length; i++) {
+	  const item = this._items[i];
+	  const startAngle = i * anglePerSegment + rotationRad - Math.PI / 2;
+	  const endAngle = (i + 1) * anglePerSegment + rotationRad - Math.PI / 2;
+	  
+	  // Сначала рисуем базовый цветной сектор
+	  const color = item.backgroundColor || 
+				   this._itemBackgroundColors[i % this._itemBackgroundColors.length] ||
+				   '#ff6b6b';
+	  
+	  ctx.fillStyle = color;
+	  ctx.beginPath();
+	  ctx.moveTo(centerX, centerY);
+	  ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+	  ctx.closePath();
+	  ctx.fill();
+	  
+	  // Затем рисуем фоновое изображение сектора (если есть)
+	  if (item.sectorBackgroundImage && item.sectorBackgroundImage !== null && !item.sectorBackgroundIsGIF) {
+		this.drawSectorBackground(ctx, item.sectorBackgroundImage, centerX, centerY, radius, startAngle, endAngle, i);
+	  }
+	  
+	  // Граница сегмента
+	  if (this._borderWidth > 0) {
+		ctx.strokeStyle = this._borderColor || '#333';
+		ctx.lineWidth = this._borderWidth || 2;
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+		ctx.closePath();
+		ctx.stroke();
+	  }
+	  
+	  // Изображение сектора (круглое)
+	  if (item.image) {
+		this.drawItemImage(ctx, item.image, centerX, centerY, radius * 0.6, startAngle + anglePerSegment / 2);
+	  }
+	  
+	  // Текст
+	if (!window.hideSectorNames && item.label){
+	  if (item.label) {
+		const textAngle = startAngle + anglePerSegment / 2;
+		const textRadius = radius * (item.image ? 0.3 : 0.7);
+		const textX = centerX + Math.cos(textAngle) * textRadius;
+		const textY = centerY + Math.sin(textAngle) * textRadius;
+		
+		ctx.fillStyle = this._itemLabelColors[0] || '#ffffff';
+		const fontSize = this._itemLabelFontSizeMax || this._itemLabelFontSize || 16;
+		ctx.font = `${fontSize}px ${this.itemLabelFont || 'Arial'}`;
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		
+		ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+		ctx.shadowBlur = 3;
+		ctx.shadowOffsetX = 1;
+		ctx.shadowOffsetY = 1;
+		
+		ctx.fillText(item.label, textX, textY);
+		
+		ctx.shadowColor = 'transparent';
+		ctx.shadowBlur = 0;
+		ctx.shadowOffsetX = 0;
+		ctx.shadowOffsetY = 0;
+	  }
+	}
+	}
     
     // Рисуем ободок колеса
     this.drawWheelBorder(ctx, centerX, centerY, radius);
@@ -823,7 +865,61 @@ drawStar(ctx, cx, cy, size, points) {
     ctx.drawImage(img, imageX, imageY, imageSize, imageSize);
     ctx.restore();
   }
-  
+	drawSectorBackground(ctx, imageSrc, centerX, centerY, radius, startAngle, endAngle, itemIndex) {
+	  // Проверяем что изображение есть и это не GIF
+	  if (!imageSrc || imageSrc === null || imageSrc === undefined) {
+		return;
+	  }
+	  
+	  if (this._items[itemIndex] && this._items[itemIndex].sectorBackgroundIsGIF) {
+		return; // GIF не рисуем в canvas
+	  }
+	  
+	  const cachedImage = this._imageCache.get(imageSrc);
+	  
+	  if (cachedImage && cachedImage.complete) {
+		ctx.save();
+		
+		// Создаем маску сектора
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+		ctx.closePath();
+		ctx.clip();
+		
+		// Вычисляем центр сектора
+		const sectorAngle = startAngle + (endAngle - startAngle) / 2;
+		const sectorCenterX = centerX + Math.cos(sectorAngle) * (radius * 0.5);
+		const sectorCenterY = centerY + Math.sin(sectorAngle) * (radius * 0.5);
+		
+		// Поворачиваем контекст на угол сектора
+		ctx.translate(sectorCenterX, sectorCenterY);
+		ctx.rotate(sectorAngle + Math.PI / 2);
+		
+		// Размер изображения должен покрывать весь сектор
+		const imageSize = radius * 1.4;
+		
+		// Рисуем изображение в центре повернутого контекста
+		ctx.drawImage(cachedImage, 
+		  -imageSize / 2, 
+		  -imageSize / 2, 
+		  imageSize, 
+		  imageSize
+		);
+		
+		ctx.restore();
+		
+	  } else if (typeof imageSrc === 'string' && !this._imageCache.has(imageSrc)) {
+		// Загружаем и кешируем новое изображение
+		const img = new Image();
+		img.onload = () => {
+		  this._imageCache.set(imageSrc, img);
+		  this.refresh();
+		};
+		img.src = imageSrc;
+		this._imageCache.set(imageSrc, img);
+	  }
+	}
   // ИСПРАВЛЕННАЯ отрисовка ободка колеса с поддержкой GIF
   drawWheelBorder(ctx, centerX, centerY, radius) {
     if (this._borderImageElement && this._borderImageElement.complete) {
@@ -864,30 +960,44 @@ drawStar(ctx, cx, cy, size, points) {
   }
   
   // Остальные методы (анимация, события и т.д.) остаются без изменений
-  animateRotation(now = 0) {
-    if (this._spinToTimeEnd !== null) {
-      if (now >= this._spinToTimeEnd) {
-        this.rotation = this._spinToEndRotation;
-        this._spinToTimeEnd = null;
-        this.raiseEvent_onRest();
-        return;
-      }
-      
-      const duration = this._spinToTimeEnd - this._spinToTimeStart;
-      let delta = (now - this._spinToTimeStart) / duration;
-      delta = (delta < 0) ? 0 : delta;
-      const distance = this._spinToEndRotation - this._spinToStartRotation;
-      
-      this.rotation = this._spinToStartRotation + distance * this._spinToEasingFunction(delta);
-      this.refresh();
+	animateRotation(now = 0) {
+  if (this._spinToTimeEnd !== null) {
+    if (now >= this._spinToTimeEnd) {
+      this.rotation = this._spinToEndRotation;
+      this._spinToTimeEnd = null;
+      this.raiseEvent_onRest();
       return;
     }
     
-    if (this._lastSpinFrameTime !== null) {
-      const delta = now - this._lastSpinFrameTime;
+    const duration = this._spinToTimeEnd - this._spinToTimeStart;
+    let delta = (now - this._spinToTimeStart) / duration;
+    delta = (delta < 0) ? 0 : delta;
+    const distance = this._spinToEndRotation - this._spinToStartRotation;
+    
+    this.rotation = this._spinToStartRotation + distance * this._spinToEasingFunction(delta);
+    this.refresh();
+    return;
+  }
+  
+  if (this._lastSpinFrameTime !== null) {
+    const delta = now - this._lastSpinFrameTime;
+    
+    if (delta > 0) {
+      this.rotation += ((delta / 1000) * this._rotationSpeed) % 360;
       
-      if (delta > 0) {
-        this.rotation += ((delta / 1000) * this._rotationSpeed) % 360;
+      // Проверяем режим постоянного вращения
+      if (window.continuousSpinMode && window.isContinuousSpinning && !window.pendingStop) {
+        // В режиме постоянного вращения - поддерживаем постоянную скорость
+        this._rotationSpeed = window.continuousSpinSpeed || 100;
+        this._lastSpinFrameTime = now;
+        
+        // Логируем только каждые 1000 кадров чтобы не засорять консоль
+        if (Math.floor(now / 1000) !== Math.floor((this._lastDebugTime || 0) / 1000)) {
+          console.log('🔄 Поддерживаем постоянную скорость:', this._rotationSpeed, 'Угол:', Math.floor(this.rotation));
+          this._lastDebugTime = now;
+        }
+      } else {
+        // Обычный режим - применяем сопротивление
         this._rotationSpeed = this.getRotationSpeedPlusDrag(delta);
         
         if (this._rotationSpeed === 0) {
@@ -897,11 +1007,12 @@ drawStar(ctx, cx, cy, size, points) {
           this._lastSpinFrameTime = now;
         }
       }
-      
-      this.refresh();
-      return;
     }
+    
+    this.refresh();
+    return;
   }
+}
   
   getRotationSpeedPlusDrag(delta = 0) {
     const newRotationSpeed = this._rotationSpeed + ((this.rotationResistance * (delta / 1000)) * this._rotationDirection);

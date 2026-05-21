@@ -703,3 +703,20 @@
     image-rendering: crisp-edges;
   }
 }
+.stretched-border {
+    image-rendering: auto !important;
+    image-rendering: -webkit-optimize-contrast !important;
+}
+
+.stretched-gif-border {
+    border-radius: 50% !important;
+    overflow: hidden !important;
+}
+
+.animated-wheel-border-gif.stretched {
+    min-width: 100% !important;
+    min-height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    transform: scale(1.05) !important; /* Небольшое увеличение для гарантии покрытия */
+}
